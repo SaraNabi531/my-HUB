@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Marketplace.css";
@@ -127,6 +126,14 @@ function Marketplace() {
         { label: "Settings", icon: "⚙", path: "/settings" },
     ];
 
+    // ===== فیلتر محصولات (کارت‌ها) =====
+    const filteredProducts = products.filter((product) =>
+        `${product.name} ${product.category} ${product.description} ${product.provider}`
+            .toLowerCase()
+            .includes(search.trim().toLowerCase())
+    );
+
+    // ===== فیلتر محصولات جدول =====
     const filteredResults = tableResults.filter((item) =>
         `${item.name} ${item.category} ${item.service} ${item.id}`
             .toLowerCase()
@@ -248,7 +255,7 @@ function Marketplace() {
                         </p>
 
                         <div className="product-grid">
-                            {products.map((product) => (
+                            {filteredProducts.map((product) => (
                                 <article className="product-card" key={product.id}>
                                     <div className={`product-image ${product.color}`}>
                                         <img
@@ -295,6 +302,12 @@ function Marketplace() {
                                     </div>
                                 </article>
                             ))}
+
+                            {filteredProducts.length === 0 && (
+                                <p className="no-products-found">
+                                    No products found for "{search}"
+                                </p>
+                            )}
                         </div>
                     </div>
 

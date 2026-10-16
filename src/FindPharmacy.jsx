@@ -21,7 +21,7 @@ const FindPharmacy = () => {
     { label: "Chat", icon: "▤", path: "/chat" },
     { label: "Find MarketPlace", icon: "▰", path: "/marketplace" },
     { label: "Find Pharmacy", icon: "💊", path: "/pharmacy" },
-   { label: "My Dependents", icon: "▤", path: "/my-dependents" },
+    { label: "My Dependents", icon: "▤", path: "/my-dependents" },
     { label: "My Account", icon: "♟", path: "/account" },
     { label: "Settings", icon: "⚙", path: "/settings" },
   ];
@@ -126,6 +126,7 @@ const FindPharmacy = () => {
 
   const searchValue = search.trim().toLowerCase();
 
+  // ===== فیلتر جدول =====
   const filteredMedicines = medicines.filter((medicine) => {
     return (
       medicine.name.toLowerCase().includes(searchValue) ||
@@ -134,6 +135,16 @@ const FindPharmacy = () => {
       medicine.id.toLowerCase().includes(searchValue) ||
       medicine.price.toLowerCase().includes(searchValue) ||
       medicine.discount.toLowerCase().includes(searchValue)
+    );
+  });
+
+  // ===== فیلتر کارت‌ها =====
+  const filteredCardMedicines = cardMedicines.filter((item) => {
+    return (
+      item.name.toLowerCase().includes(searchValue) ||
+      item.pharmacy.toLowerCase().includes(searchValue) ||
+      item.description.toLowerCase().includes(searchValue) ||
+      item.price.toLowerCase().includes(searchValue)
     );
   });
 
@@ -267,7 +278,7 @@ const FindPharmacy = () => {
           <h1>Search Pharmacies for Medicines</h1>
 
           <div className="pharmacy-grid">
-            {cardMedicines.map((item) => (
+            {filteredCardMedicines.map((item) => (
               <article className="pharmacy-card" key={item.pharmacy}>
                 <div className="medicine-image">
                   <img
@@ -300,6 +311,12 @@ const FindPharmacy = () => {
                 </button>
               </article>
             ))}
+
+            {filteredCardMedicines.length === 0 && (
+              <p className="no-cards-found">
+                No pharmacies found for "{search}"
+              </p>
+            )}
           </div>
         </section>
 
